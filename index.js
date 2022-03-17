@@ -9,10 +9,10 @@ app.get('/', (req,res)=>{
 });
 //this route return list of courses
 app.get("/api/courses", (req, res) => {
-  res.send([1,2,3]);
+  res.send([1,2,3,4]);
 });
 
-app.listen(3000, ()=>{
+app.listen(4500, ()=>{
   console.log('server listening');
 })
 
