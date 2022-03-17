@@ -1,7 +1,12 @@
 //require('express')//return fn stored in var express
 const express = require("express");
 const app = express();//app object created
-
+//data
+const courses = [
+  { ids:1, name:'java'},
+  { ids:2, name:'html'},
+  { ids:3, name: 'css'}
+]
 //whn '/' hits, this callbk run and send to browser
 
 app.get('/', (req,res)=>{
@@ -28,8 +33,22 @@ app.get("/api/courses/:stack/:name", (req, res) => {
   res.send(req.query);
 });
 
-
-
+//getting all couses
+app.get("/api/allcourses", (req, res) => {
+  res.send(courses);
+});
+//getting single couses
+app.get("/api/:ids", (req, res) => {
+  //req.params.id return string
+  const course = courses.find(course => course.ids === parseInt(req.params.ids))
+  console.log(course)
+  if(!course){
+    //Error 404
+    res.status(404).send('Not found')
+  } else {
+    res.send(course.name)
+  }
+});
 
 
 //port dynamically assign  on deployment: not 4500
