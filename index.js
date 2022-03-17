@@ -9,11 +9,12 @@ app.get('/', (req,res)=>{
 });
 //this route return list of courses
 app.get("/api/courses", (req, res) => {
-  res.send([1,2,3,4]);
+  res.send([1,2,3,4,5]);
 });
-
-app.listen(4500, ()=>{
-  console.log('server listening');
+//port dynamically assign  on deployment: not 4500
+const port = process.env.PORT || 4500;
+app.listen(port, ()=>{
+  console.log(`server listening' on port : ${port}`);
 })
-
+// export PORT=4800 : setting port value to 4800
 
