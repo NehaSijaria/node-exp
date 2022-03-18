@@ -49,7 +49,24 @@ app.get("/api/:ids", (req, res) => {
     res.send(course.name)
   }
 });
-
+app.use(express.json())
+//read req.body(json format) and change it to object and set it back in req.body
+//handling post request
+//we will post to the colloection of courses : so plural
+app.post("/api/courses", (req, res) => {
+  //we need to read the body 
+  if(!req.body.name || req.body.name.length <3){
+    res.status(400).send('Name required and must be 3 character')
+    return;
+  }
+  const course = {
+    id: courses.length + 1,
+    //name property in the body of object
+    name: req.body.name
+  }
+  courses.push(course);
+  res.send(course);
+});
 
 //port dynamically assign  on deployment: not 4500
 const port = process.env.PORT || 4500;
