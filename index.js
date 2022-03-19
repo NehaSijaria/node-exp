@@ -1,3 +1,5 @@
+const Joi = require('joi'); //return class
+
 //require('express')//return fn stored in var express
 const express = require("express");
 const app = express();//app object created
@@ -55,8 +57,21 @@ app.use(express.json())
 //we will post to the colloection of courses : so plural
 app.post("/api/courses", (req, res) => {
   //we need to read the body 
-  if(!req.body.name || req.body.name.length <3){
-    res.status(400).send('Name required and must be 3 character')
+  //input validations
+  // if(!req.body.name || req.body.name.length <3){
+  //   res.status(400).send('Name required and must be 3 character')
+  //   return;
+  // }
+  //Schema to show properties of object
+  const schema = {
+    name: Joi.string().min(3).required()
+  }
+
+  const result = Joi.validate(req.body, schema);
+  console.log(result.error.details[0]);
+
+  if(result.error){
+    res.status(400).send(result.error.details[0].message);
     return;
   }
   const course = {
@@ -67,6 +82,16 @@ app.post("/api/courses", (req, res) => {
   courses.push(course);
   res.send(course);
 });
+//Handling Put Request
+app.put('api/courses/:id', (req,res)=>{
+  //first
+})
+
+
+
+
+
+
 
 //port dynamically assign  on deployment: not 4500
 const port = process.env.PORT || 4500;
