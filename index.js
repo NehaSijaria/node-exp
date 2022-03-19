@@ -63,15 +63,21 @@ app.post("/api/courses", (req, res) => {
   //   return;
   // }
   //Schema to show properties of object
-  const schema = {
-    name: Joi.string().min(3).required()
-  }
+  // const schema = {
+  //   name: Joi.string().min(3).required()
+  // }
 
-  const result = Joi.validate(req.body, schema);
-  console.log(result.error.details[0]);
+  // const result = Joi.validate(req.body, schema);
+  // console.log(result.error.details[0]);
 
-  if(result.error){
-    res.status(400).send(result.error.details[0].message);
+  // if(result.error){
+  //   res.status(400).send(result.error.details[0].message);
+  //   return;
+  // }
+
+  const { err } = validateCourse(req.body);
+  if (err) {
+    res.status(400).send(err.details[0].message);
     return;
   }
   const course = {
@@ -83,12 +89,47 @@ app.post("/api/courses", (req, res) => {
   res.send(course);
 });
 //Handling Put Request
-app.put('api/courses/:id', (req,res)=>{
-  //first
+app.put('/api/courses/:ids', (req,res)=>{
+  //first we will find the course ;if not available show error 404
+  const course = courses.find(
+    (c) => c.ids === parseInt(req.params.ids)    
+  );
+ 
+  if (!course) {
+    res.status(404).send("No course found to update");
+  } 
+  //course
+ const schema = {
+   name: Joi.string().min(3).required(),
+ };
+
+ const result =  Joi.validate(req.body, schema);
+ if (result.error) {
+   res.status(400).send(result.error.details[0].message);
+   return;
+ }
+// const {err} = validateCourse(req.body);
+//   if(err){
+//     res.status(400).send(err.details[0].message);
+//     return;
+//   }
+  //now we find the course: so update that and return update course property
+  course.name = req.body.name;
+  //return updated course to client
+  res.send(course);
+
 })
 
-
-
+//validation logic
+function validateCourse(course){
+  //now validate the cousre first which you will be upodate with existng
+  //validation criteria
+  const schema = {
+    name: Joi.string().min(3).required()
+  };
+  //validate what sendng via req.body to schema: if error display err msg
+  return Joi.validate(course, schema);
+}
 
 
 
