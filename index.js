@@ -44,12 +44,10 @@ app.get("/api/:ids", (req, res) => {
   //req.params.id return string
   const course = courses.find(course => course.ids === parseInt(req.params.ids))
   console.log(course)
-  if(!course){
+  if(!course) return res.status(404).send("Not found");  
     //Error 404
-    res.status(404).send('Not found')
-  } else {
+    
     res.send(course.name)
-  }
 });
 app.use(express.json())
 //read req.body(json format) and change it to object and set it back in req.body
@@ -76,10 +74,8 @@ app.post("/api/courses", (req, res) => {
   // }
 
   const { err } = validateCourse(req.body);
-  if (err) {
-    res.status(400).send(err.details[0].message);
-    return;
-  }
+  if (err) return res.status(400).send(err.details[0].message);
+  
   const course = {
     id: courses.length + 1,
     //name property in the body of object
@@ -96,7 +92,7 @@ app.put('/api/courses/:ids', (req,res)=>{
   );
  
   if (!course) {
-    res.status(404).send("No course found to update");
+    return res.status(404).send("No course found to update");
   } 
   //course
   //without refactoring
@@ -112,10 +108,9 @@ app.put('/api/courses/:ids', (req,res)=>{
 //REFACTORING CODE
 
 const {error} = validateCourse(req.body);//this fn return object with 2 propertoes: error and value, so we did obj destructuring
-  if(error){
-    res.status(400).send(error.details[0].message);
-    return;
-  }
+  if(error) return res.status(400).send(error.details[0].message);
+    
+  
   //now we find the course: so update that and return update course property
   course.name = req.body.name;
   //return updated course to client
@@ -133,8 +128,23 @@ function validateCourse(course){
   //validate what sendng via req.body to schema: if error display err msg
   return Joi.validate(course, schema);
 }
-
-
+//
+//Handle Delete 
+app.delete('/api/courses/:ids', (req,res)=>{
+  //first we will find the course ;if not available show error 404
+  const course = courses.find(
+    (c) => c.ids === parseInt(req.params.ids)    
+  ); //{id: , name:}
+  if (!course) {
+    res.status(404).send("No course found to delete");
+  } 
+  //when found particular course;find its index in courses
+  const index = courses.indexOf(course);
+  courses.splice(index,1);
+  res.send(course);
+  //
+});
+ 
 
 
 //port dynamically assign  on deployment: not 4500
