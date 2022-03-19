@@ -110,9 +110,10 @@ app.put('/api/courses/:ids', (req,res)=>{
 //    return;
 //  }
 //REFACTORING CODE
-const {err} = validateCourse(req.body);
-  if(err){
-    res.status(400).send(err.details[0].message);
+
+const {error} = validateCourse(req.body);//this fn return object with 2 propertoes: error and value, so we did obj destructuring
+  if(error){
+    res.status(400).send(error.details[0].message);
     return;
   }
   //now we find the course: so update that and return update course property
@@ -122,7 +123,7 @@ const {err} = validateCourse(req.body);
 
 })
 
-//validation logic
+//validation logic//argument will be req.body
 function validateCourse(course){
   //now validate the cousre first which you will be upodate with existng
   //validation criteria
