@@ -99,20 +99,22 @@ app.put('/api/courses/:ids', (req,res)=>{
     res.status(404).send("No course found to update");
   } 
   //course
- const schema = {
-   name: Joi.string().min(3).required(),
- };
+  //without refactoring
+//  const schema = {
+//    name: Joi.string().min(3).required(),
+//  };
 
- const result =  Joi.validate(req.body, schema);
- if (result.error) {
-   res.status(400).send(result.error.details[0].message);
-   return;
- }
-// const {err} = validateCourse(req.body);
-//   if(err){
-//     res.status(400).send(err.details[0].message);
-//     return;
-//   }
+//  const result =  Joi.validate(req.body, schema);
+//  if (result.error) {
+//    res.status(400).send(result.error.details[0].message);
+//    return;
+//  }
+//REFACTORING CODE
+const {err} = validateCourse(req.body);
+  if(err){
+    res.status(400).send(err.details[0].message);
+    return;
+  }
   //now we find the course: so update that and return update course property
   course.name = req.body.name;
   //return updated course to client
