@@ -9,8 +9,10 @@ const app = express();//app object created
 //   console.log('logging');
 //   next();
 // })
+app.use(express.json())
 app.use(logger);
-app.use(authenticate);
+app.use(express.urlencoded({ extended: true}));
+app.use(express.static('public'))
 const courses = [
   { ids:1, name:'java'},
   { ids:2, name:'html'},
@@ -56,7 +58,7 @@ app.get("/api/:ids", (req, res) => {
     
     res.send(course.name)
 });
-app.use(express.json())
+//app.use(express.json())
 //read req.body(json format) and change it to object and set it back in req.body
 //handling post request
 //we will post to the colloection of courses : so plural
