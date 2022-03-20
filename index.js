@@ -1,13 +1,16 @@
 const Joi = require('joi'); //return class
-
+const logger = require('./logger');
+const authenticate = require('./authetication');
 //require('express')//return fn stored in var express
 const express = require("express");
 const app = express();//app object created
-//data
-app.use(function(req,res,next){
-  console.log('logging');
-  next();
-})
+//move to separate module
+// app.use(function(req,res,next){
+//   console.log('logging');
+//   next();
+// })
+app.use(logger);
+app.use(authenticate);
 const courses = [
   { ids:1, name:'java'},
   { ids:2, name:'html'},
