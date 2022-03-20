@@ -30,20 +30,13 @@ app.use(express.static('public'))
 //logged each request
 app.use(morgan('tiny'));
 app.use('/api/courses', courses)
-const courses = [
-  { ids:1, name:'java'},
-  { ids:2, name:'html'},
-  { ids:3, name: 'css'}
-]
+
 //whn '/' hits, this callbk run and send to browser
 
 app.get('/', (req,res)=>{
   //res.send('hello');
   res.render('index', { title: 'exp-app', msg: 'hello' })
 });
-
- 
-
 
 //port dynamically assign  on deployment: not 4500
 const port = process.env.PORT || 4500;

@@ -1,34 +1,40 @@
 const express = require('express');
 const router = express.Router();
 
+const courses = [
+  { ids: 1, name: "java" },
+  { ids: 2, name: "html" },
+  { ids: 3, name: "css" },
+];
 
+// /api/course: courses
 //this route return list of all courses
-app.get("/api/courses", (req, res) => {
+router.get("/", (req, res) => {
   res.send([1, 2, 3, 4, 5]);
 });
 //this route return single courses(id of course)
-app.get("/api/courses/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   console.log(req.params.id);
   res.send(req.params.id);
 });
 //multiple route paramas
-app.get("/api/courses/:stack/:name", (req, res) => {
+router.get("/:stack/:name", (req, res) => {
   //console.log(req.params);
   res.send(req.params);
 });
 //{"frontend":"frontend","java":"java"}
 //
-app.get("/api/courses/:stack/:name", (req, res) => {
+router.get("/:stack/:name", (req, res) => {
   console.log(req.query);
   res.send(req.query);
 });
 
 //getting all couses
-app.get("/api/allcourses", (req, res) => {
+router.get("/api/allcourses", (req, res) => {
   res.send(courses);
 });
 //getting single couses
-app.get("/api/:ids", (req, res) => {
+router.get("/api/:ids", (req, res) => {
   //req.params.id return string
   const course = courses.find(
     (course) => course.ids === parseInt(req.params.ids)
@@ -43,7 +49,7 @@ app.get("/api/:ids", (req, res) => {
 //read req.body(json format) and change it to object and set it back in req.body
 //handling post request
 //we will post to the colloection of courses : so plural
-app.post("/api/courses", (req, res) => {
+router.post("/", (req, res) => {
   //we need to read the body
   //input validations
   // if(!req.body.name || req.body.name.length <3){
@@ -75,7 +81,7 @@ app.post("/api/courses", (req, res) => {
   res.send(course);
 });
 //Handling Put Request
-app.put("/api/courses/:ids", (req, res) => {
+router.put("/:ids", (req, res) => {
   //first we will find the course ;if not available show error 404
   const course = courses.find((c) => c.ids === parseInt(req.params.ids));
 
@@ -116,7 +122,7 @@ function validateCourse(course) {
 }
 //
 //Handle Delete
-app.delete("/api/courses/:ids", (req, res) => {
+app.router("/:ids", (req, res) => {
   //first we will find the course ;if not available show error 404
   const course = courses.find((c) => c.ids === parseInt(req.params.ids)); //{id: , name:}
   if (!course) {
