@@ -6,7 +6,8 @@ const Joi = require('joi'); //return class
 const startupDebugger = require('debug')('app:startup')
 const dbDebug = require("debug")("app:db");
 const logger = require("./logger");
-const courses = require('./courses')
+const courses = require('./routes/courses')
+const home = require('./routes/home')
 const express = require("express");
 const app = express();//app object created
 
@@ -30,13 +31,8 @@ app.use(express.static('public'))
 //logged each request
 app.use(morgan('tiny'));
 app.use('/api/courses', courses)
-
+app.use("/", home);
 //whn '/' hits, this callbk run and send to browser
-
-app.get('/', (req,res)=>{
-  //res.send('hello');
-  res.render('index', { title: 'exp-app', msg: 'hello' })
-});
 
 //port dynamically assign  on deployment: not 4500
 const port = process.env.PORT || 4500;
