@@ -4,6 +4,10 @@ const Joi = require('joi'); //return class
 const express = require("express");
 const app = express();//app object created
 //data
+app.use(function(req,res,next){
+  console.log('logging');
+  next();
+})
 const courses = [
   { ids:1, name:'java'},
   { ids:2, name:'html'},
