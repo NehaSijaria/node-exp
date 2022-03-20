@@ -12,6 +12,7 @@ const app = express();//app object created
 app.use(express.json())
 app.use(logger);
 app.use(express.urlencoded({ extended: true}));
+//read public file: static content
 app.use(express.static('public'))
 const courses = [
   { ids:1, name:'java'},
