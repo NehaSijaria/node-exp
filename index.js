@@ -3,6 +3,9 @@ const morgan = require('morgan');
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const Joi = require('joi'); //return class
+const startupDebugger = require('debug')('app:startup')
+const dbDebug = require("debug")("app:db");
+
 const logger = require('./logger');
 const authenticate = require('./authetication');
 //require('express')//return fn stored in var express
