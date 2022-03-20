@@ -1,3 +1,6 @@
+const morgan = require('morgan');
+const helmet = require("helmet");
+const bodyParser = require("body-parser");
 const Joi = require('joi'); //return class
 const logger = require('./logger');
 const authenticate = require('./authetication');
@@ -14,6 +17,8 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true}));
 //read public file: static content
 app.use(express.static('public'))
+//logged each request
+app.use(morgan('tiny'));
 const courses = [
   { ids:1, name:'java'},
   { ids:2, name:'html'},
