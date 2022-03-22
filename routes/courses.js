@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Joi = require('joi'); //return class
 
 const courses = [
   { ids: 1, name: "java" },
@@ -29,10 +30,7 @@ router.get("/:stack/:name", (req, res) => {
   res.send(req.query);
 });
 
-//getting all couses
-router.get("/api/allcourses", (req, res) => {
-  res.send(courses);
-});
+;
 //getting single couses
 router.get("/api/:ids", (req, res) => {
   //req.params.id return string
@@ -69,8 +67,8 @@ router.post("/", (req, res) => {
   //   return;
   // }
 
-  const { err } = validateCourse(req.body);
-  if (err) return res.status(400).send(err.details[0].message);
+  const { error } = validateCourse(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   const course = {
     id: courses.length + 1,
@@ -122,7 +120,7 @@ function validateCourse(course) {
 }
 //
 //Handle Delete
-app.router("/:ids", (req, res) => {
+router.delete("/:ids", (req, res) => {
   //first we will find the course ;if not available show error 404
   const course = courses.find((c) => c.ids === parseInt(req.params.ids)); //{id: , name:}
   if (!course) {

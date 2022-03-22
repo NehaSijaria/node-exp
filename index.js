@@ -2,7 +2,7 @@
 const morgan = require('morgan');
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
-const Joi = require('joi'); //return class
+
 const startupDebugger = require('debug')('app:startup')
 const dbDebug = require("debug")("app:db");
 const logger = require("./logger");
@@ -33,6 +33,12 @@ app.use(morgan('tiny'));
 app.use('/api/courses', courses)
 app.use("/", home);
 //whn '/' hits, this callbk run and send to browser
+
+//getting all couses
+app.get("/api/allcourses", (req, res) => {
+  res.send('courses');
+})
+
 
 //port dynamically assign  on deployment: not 4500
 const port = process.env.PORT || 4500;
